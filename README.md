@@ -1,6 +1,5 @@
-# VUXT - A Minimal Vue Framework
-
-This template should help get you started developing with Vue 3 in Vite.
+# VUXT - A Minimalist Vue Framework inspired by Nuxt
+This is my own vue framework to ease my development 😊
 
 ## Recommended IDE Setup
 
