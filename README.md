@@ -37,6 +37,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Vuxt Commands
+
 ### Create a Component
 
 ```sh
@@ -51,4 +54,21 @@ npm run create-component {directory/component-name}
 npm run create-page {page-name}
 # OR
 npm run create-page {directory/page-name}
+```
+
+## How to update latest Vuxt changes
+
+1. Add the `upstream` remote: Go to the root of the user's project directory (the one where Vuxt is integrated).
+```sh
+git remote add upstream https://github.com/chrischase011/vuxt.git
+```
+
+2. __Verify the remotes:__ Check if the remotes were added successfully:
+```sh
+git remote -v
+```
+
+3. Fetch the latest updates from the original `Vuxt` repository:
+```sh
+git fetch upstream
 ```
