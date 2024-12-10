@@ -28,7 +28,6 @@ routes.push({
 // Fallback 404 route
 routes.push({
   path: '/:pathMatch(.*)*',
-  redirect: '/404',
   component: () => import('../404.vue'),
   meta: { layout: 'ErrorLayout', is404: true },
   beforeEnter: (to, from, next) => {
