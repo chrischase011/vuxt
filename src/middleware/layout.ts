@@ -5,6 +5,7 @@ export async function loadLayout(route: any) {
         const layoutComponent = await import(`@/layouts/${layout}.vue`)
         route.meta.layoutComponent = layoutComponent.default
     } catch (e) {
+        console.error('Error occurred in processing of layouts: ', e)
         const layout = 'DefaultLayout'
         const layoutComponent = await import(`@/layouts/${layout}.vue`)
         route.meta.layoutComponent = layoutComponent.default
