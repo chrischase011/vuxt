@@ -6,13 +6,7 @@
 
 <script lang="ts">
 export default {
-    name: 'ErrorLayout',
-    props: {
-        route: {
-            type: Object,
-            required: true
-        }
-    }
+    name: 'ErrorLayout'
 }
 </script>
 
