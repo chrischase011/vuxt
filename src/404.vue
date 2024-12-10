@@ -24,6 +24,10 @@ const errorStore = useErrorsStore()
 const error = errorStore.error
 const router = useRouter()
 
+if(!error) {
+  router.push('/')
+}
+
 const goHome = () => {
   errorStore.clearError()
   router.push('/')
