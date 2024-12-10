@@ -72,3 +72,8 @@ git remote -v
 ```sh
 git fetch upstream
 ```
+
+4. Rebase the latest updates.
+```sh
+git rebase upstream/main
+```
