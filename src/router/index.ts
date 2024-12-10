@@ -19,10 +19,16 @@ const routes: Array<RouteRecordRaw> = Object.keys(pages).map((filePath) => {
     meta: { layout: 'DefaultLayout' },
   }
 })
+routes.push({
+  path: '/404',
+  component: () => import('../404.vue'),
+  meta: { layout: 'ErrorLayout' },
+})
 
 // Fallback 404 route
 routes.push({
   path: '/:pathMatch(.*)*',
+  redirect: '/404',
   component: () => import('../404.vue'),
   meta: { layout: 'ErrorLayout', is404: true },
   beforeEnter: (to, from, next) => {
@@ -40,6 +46,7 @@ routes.push({
     })
     next() // Proceed to the 404 component
   },
+  children: [],
 })
 
 const router = createRouter({
