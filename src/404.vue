@@ -12,7 +12,7 @@
             {{ error.info.toString() }}
         </pre>
 
-        <button @click="goHome" class="tw-bg-purple-500 tw-p-5 tw-rounded-lg tw-mt-10 tw-text-white">Go Back to Home</button>
+        <button @click="goHome" class="tw-bg-blue-400 tw-p-5 tw-rounded-lg tw-mt-10 tw-text-white">Go Back to Home</button>
     </div>
 </template>
 
