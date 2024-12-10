@@ -1,5 +1,5 @@
 # VUXT - A Minimalist Vue Framework inspired by Nuxt
-This is my own vue framework to ease my development 😊
+This is my own vue framework to ease my development😊. You can try this, too!!! 💖
 
 ## Recommended IDE Setup
 
