@@ -66,10 +66,10 @@ if (!['create-component', 'create-page'].includes(command)) {
 const selectedTemplate = command === 'create-component' ? templates.component : templates.page;
 
 // Ensure the base directory exists
-if (!fs.existsSync(baseDir)) {
-  console.error(`Error: Base directory "${baseDir}" does not exist.`);
-  process.exit(1);
-}
+// if (!fs.existsSync(baseDir)) {
+//   console.error(`Error: Base directory "${baseDir}" does not exist.`);
+//   process.exit(1);
+// }
 
 // Ensure the target directory exists
 if (!fs.existsSync(dir)) {
