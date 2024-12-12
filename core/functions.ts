@@ -22,7 +22,20 @@ interface PageMeta {
         url: string
         type: string
         siteName: string
-    }
+    },
+    scripts?: {
+        src: string;
+        type?: string;
+        async?: boolean;
+        defer?: boolean;
+        attr?: [string, string][];
+    }[];
+
+    links?: {
+        rel: string;
+        href: string;
+        attr?: [string, string][];
+    }[];
 }
 
 const defaultMeta: PageMeta = {
@@ -48,7 +61,10 @@ const defaultMeta: PageMeta = {
         url: '',
         type: '',
         siteName: '',
-    }
+    },
+    scripts: [],
+    links: [],
+
 } as PageMeta
 
 const createPageTitle = (title: string) => {
@@ -80,6 +96,48 @@ const createMetaTag = (name: string, content: string, isProperty = false) => {
     metaTag.setAttribute('content', content);
 };
 
+const createScriptTag = (src: string, type: string = 'text/javascript', attr: [string, string][] = [], async: boolean = false, defer: boolean = false) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+        console.warn(`Script with src "${src}" already exists.`);
+        return;
+    }
+
+    const scriptTag = document.createElement('script');
+    scriptTag.setAttribute('src', src);
+    scriptTag.setAttribute('type', type);
+
+    attr.forEach(([key, value]) => {
+        scriptTag.setAttribute(key, value);
+    });
+
+    if (async) {
+        scriptTag.setAttribute('async', '');
+    }
+
+    if (defer) {
+        scriptTag.setAttribute('defer', '');
+    }
+
+    document.head.appendChild(scriptTag);
+};
+
+const createLinksTag = (rel: string, href: string, attr: [string, string][] = []) => {
+    if (document.querySelector(`link[rel="${rel}"][href="${href}"]`)) {
+        console.warn(`Link with rel "${rel}" and href "${href}" already exists.`);
+        return;
+    }
+
+    const linkTag = document.createElement('link');
+    linkTag.setAttribute('rel', rel);
+    linkTag.setAttribute('href', href);
+
+    attr.forEach(([key, value]) => {
+        linkTag.setAttribute(key, value);
+    });
+
+    document.head.appendChild(linkTag);
+}
+
 
 export const definePageMeta = (meta: PageMeta) => {
     const pageMeta = {
@@ -96,6 +154,7 @@ export const definePageMeta = (meta: PageMeta) => {
         createPageIcon(pageMeta.image)
     }
 
+    // SEO Meta Tags
     Object.entries(pageMeta).forEach(([key, value]) => {
         if (typeof value === 'string' && value) {
             const isOpenGraph = key.startsWith('og:');
@@ -112,5 +171,22 @@ export const definePageMeta = (meta: PageMeta) => {
         }
     });
 
-}
+    // Page Scripts
+    if (pageMeta.scripts) {
+        pageMeta.scripts.forEach((script) => {
+            if (script.src) {
+                createScriptTag(script.src, script.type, script.attr || [], script.async || false, script.defer || false);
+            }
+        });
+    }
 
+    // Page Links
+    if (pageMeta.links) {
+        pageMeta.links.forEach((link) => {
+            if (link.rel && link.href) {
+                createLinksTag(link.rel, link.href, link.attr || []);
+            }
+        });
+    }
+
+}
