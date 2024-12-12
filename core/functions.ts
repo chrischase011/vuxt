@@ -42,47 +42,49 @@ const defaultMeta: PageMeta = {
         appId: '',
     },
     og: {
-        title: 'My Vuxt App',
-        description: 'This is made by Vuxt',
-        image: '/favicon.ico',
+        title: '',
+        description: '',
+        image: '',
         url: '',
-        type: 'website',
+        type: '',
         siteName: '',
     }
 } as PageMeta
 
 const createPageTitle = (title: string) => {
-    const titleTag = document.querySelector('title')
-    titleTag!.textContent = title
+    const titleTag = document.querySelector('title') || document.createElement('title');
+    titleTag.textContent = title;
+    if (!titleTag.parentElement) {
+        document.head.appendChild(titleTag);
+    }
 }
 
 const createPageIcon = (icon: string) => {
-    const checkIcon = document.querySelector('link[rel="icon"]')
-    const iconTag = !checkIcon ? document.createElement('link') : checkIcon
+    const existingIcon = document.querySelector('link[rel="icon"]');
+    const iconTag = existingIcon || document.createElement('link');
     iconTag.setAttribute('rel', 'icon')
     iconTag.setAttribute('href', icon)
     document.head.appendChild(iconTag)
 }
 
-const createMetaTag = (name: string, content: string) => {
-    const metaTag = document.createElement('meta')
-    metaTag.setAttribute('name', name)
-    metaTag.setAttribute('content', content)
-    document.head.appendChild(metaTag)
-}
+const createMetaTag = (name: string, content: string, isProperty = false) => {
+    const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+    let metaTag = document.querySelector(selector);
+
+    if (!metaTag) {
+        metaTag = document.createElement('meta');
+        metaTag.setAttribute(isProperty ? 'property' : 'name', name);
+        document.head.appendChild(metaTag);
+    }
+
+    metaTag.setAttribute('content', content);
+};
+
 
 export const definePageMeta = (meta: PageMeta) => {
     const pageMeta = {
-        title: meta.title || defaultMeta.title,
-        description: meta.description || defaultMeta.description,
-        keywords: meta.keywords || defaultMeta.keywords,
-        image: meta.image || defaultMeta.image,
-        url: meta.url || defaultMeta.url,
-        type: meta.type || defaultMeta.type,
-        siteName: meta.siteName || defaultMeta.siteName,
-        twitter: meta.twitter || defaultMeta.twitter,
-        facebook: meta.facebook || defaultMeta.facebook,
-        og: meta.og || defaultMeta.og,
+        ...defaultMeta,
+        ...meta
     }
 
 
@@ -94,10 +96,19 @@ export const definePageMeta = (meta: PageMeta) => {
         createPageIcon(pageMeta.image)
     }
 
-    Object.keys(pageMeta).forEach((key) => {
-        const metaKey = key as keyof PageMeta;
-        if (typeof pageMeta[metaKey] === 'string') {
-            if (pageMeta[metaKey]) createMetaTag(metaKey, pageMeta[metaKey] as string);
+    Object.entries(pageMeta).forEach(([key, value]) => {
+        if (typeof value === 'string' && value) {
+            const isOpenGraph = key.startsWith('og:');
+            createMetaTag(key, value, isOpenGraph);
+        } else if (typeof value === 'object' && value) {
+            // Handle nested meta like `og`, `twitter`, etc.
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+                if (typeof nestedValue === 'string' && nestedValue) {
+                    const isOpenGraph = key === 'og';
+                    const metaKey = isOpenGraph ? `og:${nestedKey}` : `${key}:${nestedKey}`;
+                    createMetaTag(metaKey, nestedValue, isOpenGraph);
+                }
+            });
         }
     });
 
