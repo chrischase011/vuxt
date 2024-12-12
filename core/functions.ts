@@ -56,6 +56,14 @@ const createPageTitle = (title: string) => {
     titleTag!.textContent = title
 }
 
+const createPageIcon = (icon: string) => {
+    const checkIcon = document.querySelector('link[rel="icon"]')
+    const iconTag = !checkIcon ? document.createElement('link') : checkIcon
+    iconTag.setAttribute('rel', 'icon')
+    iconTag.setAttribute('href', icon)
+    document.head.appendChild(iconTag)
+}
+
 const createMetaTag = (name: string, content: string) => {
     const metaTag = document.createElement('meta')
     metaTag.setAttribute('name', name)
@@ -80,6 +88,10 @@ export const definePageMeta = (meta: PageMeta) => {
 
     if (pageMeta.title) {
         createPageTitle(pageMeta.title)
+    }
+
+    if (pageMeta.image) {
+        createPageIcon(pageMeta.image)
     }
 
     Object.keys(pageMeta).forEach((key) => {
