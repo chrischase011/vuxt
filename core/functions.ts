@@ -1,4 +1,4 @@
-
+// Interface
 interface PageMeta {
     title: string
     description: string
@@ -37,6 +37,8 @@ interface PageMeta {
         attr?: [string, string][];
     }[];
 }
+
+// FUNCTIONS
 
 const defaultMeta: PageMeta = {
     title: 'My Vuxt App',
@@ -139,12 +141,14 @@ const createLinksTag = (rel: string, href: string, attr: [string, string][] = []
 }
 
 
+
+// EXPORTS
+
 export const definePageMeta = (meta: PageMeta) => {
     const pageMeta = {
         ...defaultMeta,
         ...meta
     }
-
 
     if (pageMeta.title) {
         createPageTitle(pageMeta.title)
