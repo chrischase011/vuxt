@@ -25,7 +25,7 @@ const error = errorStore.error
 const router = useRouter()
 
 if(!error) {
-  router.push('/')
+  router.back()
 }
 
 const goHome = () => {
